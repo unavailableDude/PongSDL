@@ -12,6 +12,7 @@
 
 //3rd party
 #include "../include/SDL2/SDL.h"
+#include "../include/SDL2/SDL_keyboard.h"
 
 //1st party
 #include "../include/GameContext.hpp"
@@ -55,7 +56,7 @@ int main(int argc, char* argv[]){
 	gameContext._paddle2 = (int*)&paddle2;
 	gameContext._ball = (int*)&ball;
 
-	int moveSpeed = 16;
+	int moveSpeed = 8;
 
 	SDL_Event event;
 	bool running = true;
@@ -69,12 +70,28 @@ int main(int argc, char* argv[]){
 			else if(event.type == SDL_KEYDOWN){
 				switch(event.key.keysym.sym){
 					case SDLK_w:
-						paddle1.MoveUp(moveSpeed);
-						paddle2.MoveUp(moveSpeed);
+						paddle1.SetVelocity(Vec2f(0.0f, -1.0f * moveSpeed));
+						paddle2.SetVelocity(Vec2f(0.0f, -1.0f * moveSpeed));
 						break;
 					case SDLK_s:
-						paddle1.MoveDown(moveSpeed);
-						paddle2.MoveDown(moveSpeed);
+						paddle1.SetVelocity(Vec2f(0.0f, 1.0f * moveSpeed));
+						paddle2.SetVelocity(Vec2f(0.0f, 1.0f * moveSpeed));
+					break;  
+					case SDLK_a:
+						break;
+					case SDLK_d:
+						break;
+				}
+			}
+			else if(event.type == SDL_KEYUP){
+				switch(event.key.keysym.sym){
+					case SDLK_w:
+						paddle1.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
+						paddle2.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
+						break;
+					case SDLK_s:
+						paddle1.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
+						paddle2.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
 						break;  
 					case SDLK_a:
 						break;
@@ -84,6 +101,8 @@ int main(int argc, char* argv[]){
 			}
 		}
 		ball.Update();
+		paddle1.UpdatePosition();
+		paddle2.UpdatePosition();
 
 		SDL_SetRenderDrawColor(renderer1, 0, 0, 0, 255);
 		SDL_RenderClear(renderer1);

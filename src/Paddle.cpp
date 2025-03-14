@@ -1,7 +1,7 @@
 #include "../include/Paddle.hpp"
 
 
-Paddle::Paddle(int x, int y, int w, int h) : _position(x, y), _rect{x, y, w, h}, _color{255, 255, 255, 255}{}
+Paddle::Paddle(int x, int y, int w, int h) : _position(x, y), _rect{x, y, w, h}, _color{255, 255, 255, 255}, _velocity(0.0f, 0.0f){}
 
 void Paddle::Draw(SDL_Renderer* renderer){
 	SDL_Color cachedColor;
@@ -31,6 +31,17 @@ void Paddle::MoveUp(int step){
 void Paddle::MoveDown(int step){
 	_position._y += step;
 	_rect.y = _position._y;
+}
+
+void Paddle::UpdatePosition(){
+	_position._x += _velocity._x;
+	_position._y += _velocity._y;
+	_rect.x = _position._x;
+	_rect.y = _position._y;
+}
+
+void Paddle::SetVelocity(Vec2f velocity){
+	_velocity = velocity;
 }
 
 void Paddle::SetGameContext(GameContext* gameContext){

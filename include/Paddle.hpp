@@ -18,6 +18,8 @@ public:
 	void MoveDown(int step);
 	// void moveLeft();
 	// void moveRight();
+	void UpdatePosition();
+	void SetVelocity(Vec2f velocity);
 	void SetGameContext(GameContext* gameContext);
 	int GetX();
 	int GetY();
@@ -26,6 +28,7 @@ public:
 
 private:
 	Vec2int _position;
+	Vec2f _velocity;
 	SDL_Rect _rect;
 	SDL_Color _color;
 	GameContext* _gameContext;
