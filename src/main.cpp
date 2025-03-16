@@ -68,6 +68,7 @@ int main(int argc, char* argv[]){
 	Paddle paddle1(10, SCRH / 2 - 50, 20, 100);			//x, y, w, h. at top left corner
 	Paddle paddle2(SCRW - 30, SCRH / 2- 50, 20, 100);
 	PongBall ball(SCRW / 2, SCRH / 2, 16);
+	
 	paddle1.SetColor({255, 255, 50, 255});
 	paddle2.SetColor({255, 255, 50, 255});
 	ball.SetColor({255, 255, 50, 255});
