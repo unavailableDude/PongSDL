@@ -3,6 +3,10 @@
 
 Paddle::Paddle(int x, int y, int w, int h) : _position(x, y), _rect{x, y, w, h}, _color{255, 255, 255, 255}, _velocity(0.0f, 0.0f){}
 
+void Paddle::SetColor(SDL_Color col){
+	_color = col;
+}
+
 void Paddle::Draw(SDL_Renderer* renderer){
 	SDL_Color cachedColor;
 	SDL_GetRenderDrawColor(renderer, &cachedColor.r, &cachedColor.g, &cachedColor.b, &cachedColor.a);

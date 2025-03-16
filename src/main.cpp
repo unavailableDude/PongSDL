@@ -24,6 +24,28 @@ const int SCRW = 800;
 const int SCRH = 600;
 
 
+void DrawGameBG(SDL_Renderer *renderer, int width, int height){
+	SDL_Color cachedColor;
+	SDL_GetRenderDrawColor(renderer, &cachedColor.r, &cachedColor.g, &cachedColor.b, &cachedColor.a);
+
+	int bgw = width;
+	int bgh = height;
+	Vec2int topLeft(0, 0);
+	Vec2int topRight(bgw, 0);
+	Vec2int bottomLeft(0, bgh);
+	Vec2int bottomRight(bgw, bgh);
+	Vec2int topMiddle(bgw / 2, 0);
+	Vec2int bottomMiddle(bgw / 2, bgh);
+
+	SDL_Rect gameFieldRect = {topLeft._x, topLeft._y, bottomRight._x, bottomRight._y};
+
+	SDL_RenderDrawRect(renderer, &gameFieldRect);
+	SDL_RenderDrawLine(renderer, topMiddle._x, topMiddle._y, bottomMiddle._x, bottomMiddle._y);
+
+	SDL_SetRenderDrawColor(renderer, cachedColor.r, cachedColor.g, cachedColor.b, cachedColor.a);
+}
+
+
 int main(int argc, char* argv[]){
 	//initialize SDL
 	if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -46,6 +68,9 @@ int main(int argc, char* argv[]){
 	Paddle paddle1(10, SCRH / 2 - 50, 20, 100);			//x, y, w, h. at top left corner
 	Paddle paddle2(SCRW - 30, SCRH / 2- 50, 20, 100);
 	PongBall ball(SCRW / 2, SCRH / 2, 16);
+	paddle1.SetColor({255, 255, 50, 255});
+	paddle2.SetColor({255, 255, 50, 255});
+	ball.SetColor({255, 255, 50, 255});
 	ball.SetVelocity(Vec2f(3.0f, -2.0f));
 
 	gameContext._windowSize = Vec2int(SCRW, SCRH);
@@ -71,15 +96,16 @@ int main(int argc, char* argv[]){
 				switch(event.key.keysym.sym){
 					case SDLK_w:
 						paddle1.SetVelocity(Vec2f(0.0f, -1.0f * moveSpeed));
-						paddle2.SetVelocity(Vec2f(0.0f, -1.0f * moveSpeed));
 						break;
 					case SDLK_s:
 						paddle1.SetVelocity(Vec2f(0.0f, 1.0f * moveSpeed));
-						paddle2.SetVelocity(Vec2f(0.0f, 1.0f * moveSpeed));
-					break;  
-					case SDLK_a:
 						break;
-					case SDLK_d:
+
+					case SDLK_UP:
+						paddle2.SetVelocity(Vec2f(0.0f, -1.0f * moveSpeed));
+						break;
+					case SDLK_DOWN:
+						paddle2.SetVelocity(Vec2f(0.0f, 1.0f * moveSpeed));
 						break;
 				}
 			}
@@ -87,19 +113,22 @@ int main(int argc, char* argv[]){
 				switch(event.key.keysym.sym){
 					case SDLK_w:
 						paddle1.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
-						paddle2.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
 						break;
 					case SDLK_s:
 						paddle1.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
-						paddle2.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
-						break;  
-					case SDLK_a:
 						break;
-					case SDLK_d:
+
+						case SDLK_UP:
+						paddle2.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
+						break;
+					case SDLK_DOWN:
+						paddle2.SetVelocity(Vec2f(0.0f, 0.0f * moveSpeed));
 						break;
 				}
 			}
 		}
+		
+		//physcis update
 		ball.Update();
 		paddle1.UpdatePosition();
 		paddle2.UpdatePosition();
@@ -107,6 +136,11 @@ int main(int argc, char* argv[]){
 		SDL_SetRenderDrawColor(renderer1, 0, 0, 0, 255);
 		SDL_RenderClear(renderer1);
 
+		//draw game
+		SDL_SetRenderDrawColor(renderer1, 255, 64, 127, 255);
+		DrawGameBG(renderer1, SCRW, SCRH);
+		
+		SDL_SetRenderDrawColor(renderer1, 255, 255, 255, 255);
 		paddle1.DrawFilled(renderer1);
 		paddle2.DrawFilled(renderer1);
 		ball.DrawFilled(renderer1);

@@ -12,6 +12,7 @@ class Paddle{
 public:
 	Paddle(int x, int y, int w, int h);
 
+	void SetColor(SDL_Color col);
 	void Draw(SDL_Renderer* renderer);
 	void DrawFilled(SDL_Renderer* renderer);
 	void MoveUp(int step);

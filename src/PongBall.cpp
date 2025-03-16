@@ -7,13 +7,17 @@ void CircleDrawOutlined(SDL_Renderer *renderer, Vec2int _coords, int _r);
 void CircleDrawFilled(SDL_Renderer *renderer, Vec2int _coords, int _r);
 
 
-PongBall::PongBall(int x, int y, int r) : _position(x, y), _velocity(0.0f, 0.0f), _radius(r){}
+PongBall::PongBall(int x, int y, int r) : _position{x, y}, _velocity{0.0f, 0.0f}, _color{255, 255, 255, 255}, _radius{r}{}
+
+void PongBall::SetColor(SDL_Color col){
+	_color = col;
+}
 
 void PongBall::Draw(SDL_Renderer* renderer){
 	SDL_Color cachedColor;
 	SDL_GetRenderDrawColor(renderer, &cachedColor.r, &cachedColor.g, &cachedColor.b, &cachedColor.a);
 	
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(renderer, _color.r, _color.g, _color.b, _color.a);
 	CircleDrawOutlined(renderer, _position, _radius);
 
 	SDL_SetRenderDrawColor(renderer, cachedColor.r, cachedColor.g, cachedColor.b, cachedColor.a);
@@ -23,7 +27,7 @@ void PongBall::DrawFilled(SDL_Renderer* renderer){
 	SDL_Color cachedColor;
 	SDL_GetRenderDrawColor(renderer, &cachedColor.r, &cachedColor.g, &cachedColor.b, &cachedColor.a);
 	
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(renderer, _color.r, _color.g, _color.b, _color.a);
 	CircleDrawFilled(renderer, _position, _radius);
 
 	SDL_SetRenderDrawColor(renderer, cachedColor.r, cachedColor.g, cachedColor.b, cachedColor.a);

@@ -13,6 +13,7 @@ class PongBall{
 public:
 	PongBall(int x, int y, int r);
 
+	void SetColor(SDL_Color col);
 	void Draw(SDL_Renderer* renderer);
 	void DrawFilled(SDL_Renderer* renderer);
 	// void Move();
@@ -27,6 +28,7 @@ public:
 private:
 	Vec2int _position;
 	Vec2f _velocity;
+	SDL_Color _color;
 	int _radius;
 	GameContext* _gameContext;
 };
